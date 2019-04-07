@@ -31,9 +31,9 @@ public class JWTHandler {
  
     private static final String ISSUER = "JwtRestApp";
 
-    private static final String TYPE_ACCESS = "access_token";
+    // private static final String TYPE_ACCESS = "access_token";
     
-    private static final String TYPE_REFRESH = "refresh_token";
+    // private static final String TYPE_REFRESH = "refresh_token";
 
     // private final HashMap<String, String> users = new HashMap<String, String>();
 
@@ -43,20 +43,14 @@ public class JWTHandler {
 	public JWTHandler() {
     }
 
-    public String create(String username) {
-        // UUID id = UUID.randomUUID();
+    public String create(String username, long ttl) {
         String access_token = this.createJWT(
             UUID.randomUUID().toString(), 
             JWTHandler.ISSUER,
             username, 
-            JWTHandler.ACCESS_TOKEN_EXPIRY
+            ttl
         );
         return access_token;
-    }
-
-    public String refresh(String username, String refreshToken) {
-        // TODO: 
-        return "";
     }
 
     public boolean verify(String jwt) {

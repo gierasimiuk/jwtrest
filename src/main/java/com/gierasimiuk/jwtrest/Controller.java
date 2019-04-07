@@ -39,16 +39,30 @@ public class Controller {
         }
         String existing = users.get(username);
         if (existing.equals(password)) {
-            return new ResponseEntity<>(handler.create(username), HttpStatus.OK);
+            String access = handler.create(username, JWTHandler.ACCESS_TOKEN_EXPIRY);
+            String refresh = handler.create(username, JWTHandler.REFRESH_TOKEN_EXPIRY);
+            String response = "{ access_token: " + access + ", refresh_token: " + refresh + " }";
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }
         return new ResponseEntity<>("Incorrect password", HttpStatus.UNAUTHORIZED);
     }
 
     @RequestMapping(value = "/refresh", method = {RequestMethod.POST })
     public @ResponseBody ResponseEntity<Object> refresh( 
-        @RequestParam("username") String username,
-        @RequestParam("token") String token) {
-        return new ResponseEntity<>(handler.refresh(username, token), HttpStatus.OK);
+            @RequestParam("username") String username,
+            @RequestParam("token") String token) {
+        if (!users.containsKey(username)) {
+            return new ResponseEntity<>("User '" + username + "' not found", HttpStatus.NOT_FOUND);
+        }
+        try {
+            if (handler.verify(token)) {
+                String accessToken = handler.create(username, JWTHandler.ACCESS_TOKEN_EXPIRY);
+                return new ResponseEntity<>(accessToken, HttpStatus.OK);
+            }
+            return new ResponseEntity<>("Access Denied!", HttpStatus.UNAUTHORIZED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Could not verify refresh token", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @RequestMapping("/access")
@@ -60,7 +74,7 @@ public class Controller {
             }
             return new ResponseEntity<>("Access Denied!", HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
-            return new ResponseEntity<>("Could not verify JWT token", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Could not verify access token", HttpStatus.BAD_REQUEST);
         }
     }
 }
