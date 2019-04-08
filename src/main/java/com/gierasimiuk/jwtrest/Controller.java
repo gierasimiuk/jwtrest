@@ -1,6 +1,7 @@
 package com.gierasimiuk.jwtrest;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Controller {
     private static final HashMap<String, String> users = new HashMap<String, String>();
-    private static final JWTHandler handler = new JWTHandler();
+    private static final AuthService handler = new AuthService();
 
     @RequestMapping(value = "/signup", method = {RequestMethod.POST })
     public @ResponseBody ResponseEntity<Object> signup(
@@ -37,14 +38,19 @@ public class Controller {
         if (!users.containsKey(username)) {
             return new ResponseEntity<>("User '" + username + "' not found", HttpStatus.NOT_FOUND);
         }
-        String existing = users.get(username);
-        if (existing.equals(password)) {
-            String access = handler.create(username, JWTHandler.ACCESS_TOKEN_EXPIRY);
-            String refresh = handler.create(username, JWTHandler.REFRESH_TOKEN_EXPIRY);
-            String response = "{ access_token: " + access + ", refresh_token: " + refresh + " }";
-            return new ResponseEntity<>(response, HttpStatus.OK);
+        try {
+            String existing = users.get(username);
+            if (existing.equals(password)) {
+                Map<String, String> tokens = handler.auth(username);
+                String access = tokens.get("access_token");
+                String refresh = tokens.get("refresh_token");
+                String response = "{ access_token: " + access + ", refresh_token: " + refresh + " }";
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }
+            return new ResponseEntity<>("Incorrect password", HttpStatus.UNAUTHORIZED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Could not verify refresh token", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Incorrect password", HttpStatus.UNAUTHORIZED);
     }
 
     @RequestMapping(value = "/refresh", method = {RequestMethod.POST })
@@ -55,8 +61,8 @@ public class Controller {
             return new ResponseEntity<>("User '" + username + "' not found", HttpStatus.NOT_FOUND);
         }
         try {
-            if (handler.verify(token)) {
-                String accessToken = handler.create(username, JWTHandler.ACCESS_TOKEN_EXPIRY);
+            if (handler.isRefreshTokenValid(username, token)) {
+                String accessToken = handler.refresh(username, token);
                 return new ResponseEntity<>(accessToken, HttpStatus.OK);
             }
             return new ResponseEntity<>("Access Denied!", HttpStatus.UNAUTHORIZED);
@@ -65,11 +71,11 @@ public class Controller {
         }
     }
 
-    @RequestMapping("/access")
+    @RequestMapping(value="/access", method = {RequestMethod.GET })
     public @ResponseBody ResponseEntity<Object> access(
             @RequestParam("token") String token) {
         try {
-            if (handler.verify(token)) {
+            if (handler.isAccessToken(token) && handler.verifyExp(token)) {
                 return new ResponseEntity<>("Access Granted!", HttpStatus.OK);
             }
             return new ResponseEntity<>("Access Denied!", HttpStatus.UNAUTHORIZED);
