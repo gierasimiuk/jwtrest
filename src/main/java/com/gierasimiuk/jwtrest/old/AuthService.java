@@ -1,4 +1,4 @@
-package com.gierasimiuk.jwtrest;
+package com.gierasimiuk.jwtrest.old;
 
 import java.security.Key;
 import java.util.Date;
@@ -16,6 +16,8 @@ import io.jsonwebtoken.JwtBuilder;
 
 /**
  * {@link AuthService} class. 
+ * 
+ * TODO MIDDLEWARE to handle authentication
  * 
  * @author Michael Gierasimiuk
  */

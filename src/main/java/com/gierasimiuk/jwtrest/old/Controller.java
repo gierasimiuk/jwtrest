@@ -1,4 +1,4 @@
-package com.gierasimiuk.jwtrest;
+package com.gierasimiuk.jwtrest.old;
 
 import java.util.HashMap;
 import java.util.Map;
