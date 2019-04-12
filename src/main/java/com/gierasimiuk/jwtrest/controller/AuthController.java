@@ -1,8 +1,5 @@
 package com.gierasimiuk.jwtrest.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.gierasimiuk.jwtrest.model.AuthenticatedUser;
 import com.gierasimiuk.jwtrest.model.User;
 import com.gierasimiuk.jwtrest.service.AuthService;
@@ -20,7 +17,6 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 public class AuthController {
     
-    private static final Map<String, AuthenticatedUser> authenticatedUsers = new HashMap<String, AuthenticatedUser>();
     private static final AuthService authService = new AuthService();
     private static final UserService userService = new UserService();
 
@@ -63,7 +59,6 @@ public class AuthController {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not find user with id " + id);
             }
             authUser = authService.login(user, username, password);
-            authenticatedUsers.put(authUser.getId(), authUser);
         } catch(Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
