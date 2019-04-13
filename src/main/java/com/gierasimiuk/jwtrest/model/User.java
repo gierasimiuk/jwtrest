@@ -2,6 +2,11 @@ package com.gierasimiuk.jwtrest.model;
 
 import java.util.UUID;
 
+/**
+ * Definition of a user in the system.
+ * 
+ * @author Michael Gierasimiuk
+ */
 public class User {
 
     private String id;

@@ -52,7 +52,7 @@ public class JwtTokenFactory {
         return new JwtRefreshToken(token);
     }
 
-    // Generic function to construct a JWT 
+    // Generic inner function to construct a JWT
     private String constructJwt(String userId, Claims claims, long tokenExpiry) {
         Date now = new Date(System.currentTimeMillis());
 

@@ -3,6 +3,11 @@ package com.gierasimiuk.jwtrest.model;
 import com.gierasimiuk.jwtrest.model.token.JwtAccessToken;
 import com.gierasimiuk.jwtrest.model.token.JwtRefreshToken;
 
+/**
+ * Definition of an authenticated user in the system.
+ * 
+ * @author Michael Gierasimiuk
+ */
 public class AuthenticatedUser {
 
     private String id;

@@ -8,7 +8,9 @@ import com.gierasimiuk.jwtrest.model.User;
 import org.springframework.util.StringUtils;
 
 /**
- * Handles user creation and validation. 
+ * Service for handling user creation. 
+ * 
+ * @author Michael Gierasimiuk
  */
 public class UserService {
     
@@ -51,16 +53,24 @@ public class UserService {
         
         return user;
     }
-
+    
+    /**
+     * Finds the {@link User} with the given unique identifier and returns the result. 
+     * 
+     * @param id the unique identifier of the {@link User}.
+     * @return the {@link User} with the given identifier.
+     */
     public User getUser(String id) {
         return users.get(id);
     }
-
-    public User getUserByUsername(String id) {
-        return usernames.get(id);
+    
+    /**
+     * Finds the {@link User} with the given username. 
+     * 
+     * @param username the username of the {@link User}.
+     * @return the {@link User} with the username.
+     */
+    public User getUserByUsername(String username) {
+        return usernames.get(username);
     }
-
-    // public AuthenticatedUser getAuthUser(String id) {
-    //     return authUsers.get(id);
-    // }
 }

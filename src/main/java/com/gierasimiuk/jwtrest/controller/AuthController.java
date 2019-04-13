@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+/**
+ * Controller for routing HTTP endpoints accordingly. 
+ * 
+ * @author Michael Gierasimiuk
+ */
 @RestController
 public class AuthController {
     
@@ -76,8 +81,12 @@ public class AuthController {
     public @ResponseBody ResponseEntity<Object> refresh( 
             @RequestHeader("username") String username, 
             @RequestHeader("token") String token) {
-        String result = authService.token();
-        return new ResponseEntity<>(result, HttpStatus.OK);
+    	try {
+    		String newToken = authService.token(username, token);
+    		return new ResponseEntity<>(newToken, HttpStatus.OK);
+    	} catch(Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 
     /**
