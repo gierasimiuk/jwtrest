@@ -9,8 +9,10 @@ Allows a user to signup simply by sending a post request with the desired
 username and password in the header. If a user with the given username already 
 exists, the server responds with a response code of `400`.
 
-URL: `api/auth/signup`
-Method: `POST`
+**URL:** `api/auth/signup` 
+
+**Method:** `POST` 
+
 ```json
 {
   username: "username"
