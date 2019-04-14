@@ -37,7 +37,7 @@ upon server restart.
 **Data:**
 ```json
 {
-  "id": "28b8252b-b818-4153-855c-b803093407fa",
+  "id": "9e255df7-dee9-489f-9bbe-b96d8e7598e0",
   "username": "admin",
   "password": "pass123"
 }
@@ -54,7 +54,7 @@ assuming a valid refresh token is passed through.
 **Data:**
 ```json
 {
-    "id": "9e255df7-dee9-489f-9bbe-b96d8e7598e0",
+    "user_id": "9e255df7-dee9-489f-9bbe-b96d8e7598e0",
     "refresh_token": "eyJ0eXAiO.iLCJpYXQiO.0JowFv7QaI"
 }
 ```
@@ -70,7 +70,7 @@ the user sends through a valid token.
 **Data:**
 ```json
 {
-    "id": "9e255df7-dee9-489f-9bbe-b96d8e7598e0",
+    "user_id": "9e255df7-dee9-489f-9bbe-b96d8e7598e0",
     "access_token": "eyJ0eXAiOi.iLCJpYXQiO.hT8b5fx9Pc"
 }
 ```
