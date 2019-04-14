@@ -5,18 +5,17 @@ Framework.
 
 ## Endpoints:
 
-Data for all endpoints should be sent as JSON.
+Data for all endpoints is in JSON format.
 
 ### Signup:
-Allows a user to signup simply by sending a post request with the desired 
-username and password in the header. If a user with the given username already 
-exists, the server responds with a response code of `400`.
+Endpoint to process a signup action. If a user with the given username already 
+exists, the server will respond with an error code of `400`.
 
 **URL:** `/api/users/signup`
 
 **Method:** `POST` 
 
-**Data:**
+**Example Data:**
 ```json
 {
   "username": "admin",
@@ -25,19 +24,19 @@ exists, the server responds with a response code of `400`.
 ```
 
 ### Login:
-Allows a user to login to the server by sending a post request with the
-username and password. This endpoint will only work once a user has successfully
-signed up. Note that because users are stroed in memory, all users are wiped 
-upon server restart.
+Endpoint to process a login action. This endpoint will only work once a user has 
+successfully signed up. If a user with the given id is not found, the server will 
+respond with an error code of `400`. Note that because users are stored in 
+memory, all users are wiped upon server restart. 
 
 **URL:** `/api/users/login`
 
 **Method:** `POST`
 
-**Data:**
+**Example Data:**
 ```json
 {
-  "id": "9e255df7-dee9-489f-9bbe-b96d8e7598e0",
+  "id": "9e255df7-dee9-489f-9bbe-b96d8e7598e0", 
   "username": "admin",
   "password": "pass123"
 }
@@ -45,29 +44,32 @@ upon server restart.
 
 ### Token:
 Endpoint to process a token refresh. Returns a new access token to the client 
-assuming a valid refresh token is passed through.
+if and only if a valid refresh token is passed through. If the given token is
+expired, the server will respond with an error code of `400`
 
 **URL:** `/api/auth/token`
 
 **Method:** `GET`
 
-**Data:**
+**Example Data:**
 ```json
 {
     "user_id": "9e255df7-dee9-489f-9bbe-b96d8e7598e0",
-    "refresh_token": "eyJ0eXAiO.iLCJpYXQiO.0JowFv7QaI"
+    "refresh_token": "eyJ0eXAiO.iLCJpYXQiO.0JowFv7QaI" 
 }
 ```
 
 ### Access:
 Endpoint to test user authentication by returning an "Access Granted!" string if 
-the user sends through a valid token.
+the user sends through a valid token. If the user with the given id is not 
+authenticated with the system, the server will respond with an error code of 
+`401`
 
 **URL:** `/api/access`
 
 **Method:** `GET`
 
-**Data:**
+**Example Data:**
 ```json
 {
     "user_id": "9e255df7-dee9-489f-9bbe-b96d8e7598e0",
