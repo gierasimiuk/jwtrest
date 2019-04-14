@@ -69,7 +69,7 @@ public class Controller {
 
     /**
      * Endpoint to process a token refresh. Returns a new access token to the 
-     * client assuming a valid refresh token was passed through.
+     * client assuming a valid refresh token is passed through.
      * 
      * @param user the user id and refresh token combination.
      * @return the {@link ResponseBody} to send back to the client.

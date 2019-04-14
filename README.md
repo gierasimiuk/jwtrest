@@ -19,8 +19,8 @@ exists, the server responds with a response code of `400`.
 **Data (JSON):**
 ```json
 {
-  "username": "username",
-  "password": "password"
+  "username": "admin",
+  "password": "pass123"
 }
 ```
 
@@ -38,13 +38,14 @@ upon server restart.
 ```json
 {
   "username": "28b8252b-b818-4153-855c-b803093407fa",
-  "username": "username",
-  "password": "password"
+  "username": "admin",
+  "password": "pass123"
 }
 ```
 
-### Token (TODO):
-This endpoint is yet to be implemented. 
+### Token:
+Endpoint to process a token refresh. Returns a new access token to the client 
+assuming a valid refresh token is passed through.
 
 **URL:** `/api/auth/token`
 
@@ -53,13 +54,14 @@ This endpoint is yet to be implemented.
 **Data:**
 ```json
 {
-  "username": "<Unique identifier provided upon login>",
-  "token": "<Refresh token as a string>",
+    "id": "9e255df7-dee9-489f-9bbe-b96d8e7598e0",
+    "refresh_token": "eyJ0eXAiO.iLCJpYXQiO.0JowFv7QaI"
 }
 ```
 
-### Access (TODO):
-This endpoint is yet to be implemented. 
+### Access:
+Endpoint to test user authentication by returning an "Access Granted!" string if 
+the user sends through a valid token.
 
 **URL:** `/api/access`
 
@@ -68,6 +70,7 @@ This endpoint is yet to be implemented.
 **Data:**
 ```json
 {
-  "token": "<Full token as a string>",
+    "id": "9e255df7-dee9-489f-9bbe-b96d8e7598e0",
+    "access_token": "eyJ0eXAiOi.iLCJpYXQiO.hT8b5fx9Pc"
 }
 ```
