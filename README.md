@@ -8,8 +8,7 @@ Framework.
 Data for all endpoints is in JSON format.
 
 ### Signup:
-Endpoint to process a signup action. If a user with the given username already 
-exists, the server will respond with an error code of `400`.
+Endpoint to process a signup action.
 
 **URL:** `/api/users/signup`
 
@@ -25,9 +24,8 @@ exists, the server will respond with an error code of `400`.
 
 ### Login:
 Endpoint to process a login action. This endpoint will only work once a user has 
-successfully signed up. If a user with the given id is not found, the server will 
-respond with an error code of `400`. Note that because users are stored in 
-memory, all users are wiped upon server restart. 
+successfully signed up. Note that because users are stored in memory, all users 
+are wiped upon server restart. 
 
 **URL:** `/api/users/login`
 
@@ -44,8 +42,8 @@ memory, all users are wiped upon server restart.
 
 ### Token:
 Endpoint to process a token refresh. Returns a new access token to the client 
-if and only if a valid refresh token is passed through. If the given token is
-expired, the server will respond with an error code of `400`
+if and only if a valid refresh token is passed through. If the refresh token is
+expired, the user must once again login.
 
 **URL:** `/api/auth/token`
 
@@ -60,10 +58,9 @@ expired, the server will respond with an error code of `400`
 ```
 
 ### Access:
-Endpoint to test user authentication by returning an "Access Granted!" string if 
-the user sends through a valid token. If the user with the given id is not 
-authenticated with the system, the server will respond with an error code of 
-`401`
+Endpoint to test user authentication by returning an "Access Granted!" string if
+and only if the user has sent through a valid JWT access token. If the token is 
+expired, the endpoint will return "Access Denied!" with a `401` code.
 
 **URL:** `/api/access`
 
