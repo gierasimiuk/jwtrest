@@ -53,7 +53,7 @@ expired, the user must login again.
 ```json
 {
     "user_id": "9e255df7-dee9-489f-9bbe-b96d8e7598e0",
-    "refresh_token": "eyJ0eXAiO.iLCJpYXQiO.0JowFv7QaI" 
+    "refresh_token": "1QiLCJhbGciOiJIUzI1NiJ.RdwleyJ0eXAiOiJKVeXAiO.iLCJpYXQiO0JowFv7QaIer" 
 }
 ```
 
@@ -70,6 +70,6 @@ expired, the endpoint will return "Access Denied!" with a `401` HTTP code.
 ```json
 {
     "user_id": "9e255df7-dee9-489f-9bbe-b96d8e7598e0",
-    "access_token": "eyJ0eXAiOi.iLCJpYXQiO.hT8b5fx9Pc"
+    "access_token": "OeyJ0eXAiOiIUzI1NiJiLC.JpYXQiOhT8b5fx9Pc9kfYm.jowUyR6MgDf09KopER3wDu"
 }
 ```
