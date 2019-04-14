@@ -1,5 +1,7 @@
 # JWTREST
 
-## Spring RESTful server with JWT authentication
+Basic RESTful server with JWT authentication built in Java using Spring
+
+
 
 
