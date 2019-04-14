@@ -53,7 +53,7 @@ expired, the user must login again.
 ```json
 {
     "user_id": "9e255df7-dee9-489f-9bbe-b96d8e7598e0",
-    "refresh_token": "wQiLCJhbGciOiJIUzI1NiJ.RdwleyJ0eXAiOiJKVeXAiO.iLCJpYXQiO0JowFv7QaIer" 
+    "refresh_token": "1QiLCJhbGciOiJIUzI1NiJ.RdwleyJ0eXAiOiJKVeXAiO.iLCJpYXQiO0JowFv7QaIer" 
 }
 ```
 
