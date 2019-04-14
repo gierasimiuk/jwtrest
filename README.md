@@ -43,7 +43,7 @@ are wiped upon server restart.
 ### Token:
 Endpoint to process a token refresh. Returns a new access token to the client 
 if and only if a valid refresh token is passed through. If the refresh token is
-expired, the user must once again login.
+expired, the user must login again.
 
 **URL:** `/api/auth/token`
 
@@ -60,7 +60,7 @@ expired, the user must once again login.
 ### Access:
 Endpoint to test user authentication by returning an "Access Granted!" string if
 and only if the user has sent through a valid JWT access token. If the token is 
-expired, the endpoint will return "Access Denied!" with a `401` code.
+expired, the endpoint will return "Access Denied!" with a `401` HTTP code.
 
 **URL:** `/api/access`
 
