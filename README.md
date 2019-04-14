@@ -16,6 +16,7 @@ Method: `POST`
   username: "username"
   password: "password"
 }
+```
 
 ### Login:
 Allows a user to login to the server by sending a post request with the
