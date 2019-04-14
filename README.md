@@ -53,14 +53,14 @@ expired, the user must login again.
 ```json
 {
     "user_id": "9e255df7-dee9-489f-9bbe-b96d8e7598e0",
-    "refresh_token": "1QiLCJhbGciOiJIUzI1NiJ.RdwleyJ0eXAiOiJKVeXAiO.iLCJpYXQiO0JowFv7QaIer" 
+    "refresh_token": "wQiLCJhbGciOiJIUzI1NiJ.RdwleyJ0eXAiOiJKVeXAiO.iLCJpYXQiO0JowFv7QaIer" 
 }
 ```
 
 ### Access:
 Endpoint to test user authentication by returning an "Access Granted!" string if
 and only if the user has sent through a valid JWT access token. If the token is 
-expired, the endpoint will return "Access Denied!" with a `401` HTTP code.
+expired, the endpoint will return "Access Denied!" with a `401` code.
 
 **URL:** `/api/access`
 
@@ -70,6 +70,6 @@ expired, the endpoint will return "Access Denied!" with a `401` HTTP code.
 ```json
 {
     "user_id": "9e255df7-dee9-489f-9bbe-b96d8e7598e0",
-    "access_token": "OeyJ0eXAiOiIUzI1NiJiLC.JpYXQiOhT8b5fx9Pc9kfYm.jowUyR6MgDf09KopER3wDu"
+    "access_token": "OeyJ0eXAiOiukzI1NixiLC.JpYXQiOhT8b5fx9Pc9kfYm.jowUyR6MgDf09KopER3wDu"
 }
 ```
