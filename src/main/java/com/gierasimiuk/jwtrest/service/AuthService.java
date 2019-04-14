@@ -5,9 +5,9 @@ import java.util.Map;
 
 import com.gierasimiuk.jwtrest.model.AuthenticatedUser;
 import com.gierasimiuk.jwtrest.model.User;
-import com.gierasimiuk.jwtrest.model.token.JwtAccessToken;
-import com.gierasimiuk.jwtrest.model.token.JwtRefreshToken;
-import com.gierasimiuk.jwtrest.model.token.JwtTokenFactory;
+import com.gierasimiuk.jwtrest.token.JwtAccessToken;
+import com.gierasimiuk.jwtrest.token.JwtRefreshToken;
+import com.gierasimiuk.jwtrest.token.JwtTokenFactory;
 
 /**
  * Service for handling authentication. 
@@ -54,7 +54,7 @@ public class AuthService {
                 tokenFactory.createJwtRefreshToken(user);
             
             AuthenticatedUser authUser = new AuthenticatedUser(
-                user, accessToken, refreshToken);
+                user, accessToken.getToken(), refreshToken.getToken());
             authUsers.put(authUser.getId(), authUser);
             
             return authUser;

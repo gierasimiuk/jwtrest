@@ -1,4 +1,4 @@
-package com.gierasimiuk.jwtrest.model.token;
+package com.gierasimiuk.jwtrest.token;
 
 import com.gierasimiuk.jwtrest.config.JwtSettings;
 

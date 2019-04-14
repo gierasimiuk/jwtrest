@@ -2,14 +2,14 @@ package com.gierasimiuk.jwtrest.controller;
 
 import com.gierasimiuk.jwtrest.model.AuthenticatedUser;
 import com.gierasimiuk.jwtrest.model.User;
-import com.gierasimiuk.jwtrest.model.UserToken;
+import com.gierasimiuk.jwtrest.model.UserAccessToken;
+import com.gierasimiuk.jwtrest.model.UserRefreshToken;
 import com.gierasimiuk.jwtrest.service.AuthService;
 import com.gierasimiuk.jwtrest.service.UserService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -75,15 +75,16 @@ public class Controller {
      * @return the {@link ResponseBody} to send back to the client.
      */
     @RequestMapping(value = "api/auth/token", method = RequestMethod.POST)
-    public @ResponseBody ResponseEntity<Object> refresh(@RequestBody UserToken user) {
+    public @ResponseBody ResponseEntity<Object> refresh(@RequestBody UserRefreshToken user) {
     	try {
             User found = userService.getUser(user.getId());
             if (found == null) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
                     "Could not find user with id " + user.getId());
             }
-            String token = user.getToken();
-    		String accessToken = authService.token(found, token);
+            String token = user.getRefresh_token();
+            String accessTokenRaw = authService.token(found, token);
+            UserAccessToken accessToken = new UserAccessToken(user.getId(), accessTokenRaw);
     		return new ResponseEntity<>(accessToken, HttpStatus.OK);
     	} catch(Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
@@ -102,14 +103,14 @@ public class Controller {
      * @return the {@link ResponseBody} to send back to the client.
      */
     @RequestMapping(value="/api/access", method = RequestMethod.GET)
-    public @ResponseBody ResponseEntity<Object> access(@RequestBody UserToken user) {
+    public @ResponseBody ResponseEntity<Object> access(@RequestBody UserAccessToken user) {
         try {
             User found = userService.getUser(user.getId());
             if (found == null) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
                     "Could not find user with id " + user.getId());
             }
-            if (authService.isAuthenticated(user.getId(), user.getToken())) {
+            if (authService.isAuthenticated(user.getId(), user.getAccess_token())) {
                 return new ResponseEntity<>("Access Granted!", HttpStatus.OK);
             }
         } catch(Exception e) {

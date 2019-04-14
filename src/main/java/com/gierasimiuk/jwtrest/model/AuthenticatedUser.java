@@ -1,8 +1,5 @@
 package com.gierasimiuk.jwtrest.model;
 
-import com.gierasimiuk.jwtrest.model.token.JwtAccessToken;
-import com.gierasimiuk.jwtrest.model.token.JwtRefreshToken;
-
 /**
  * Definition of an authenticated user in the system.
  * 
@@ -13,15 +10,15 @@ public class AuthenticatedUser {
     private String id;
     private String username;
     private String password;
-    private JwtAccessToken access_token;
-    private JwtRefreshToken refresh_token;
+    private String access_token;
+    private String refresh_token;
 
-    public AuthenticatedUser(User user, JwtAccessToken accessToken, JwtRefreshToken refreshToken) {
+    public AuthenticatedUser(User user, String access_token, String refresh_token) {
         this.id = user.getId();
         this.username = user.getUsername();
         this.password = user.getPassword();
-        this.access_token = accessToken;
-        this.refresh_token = refreshToken;
+        this.access_token = access_token;
+        this.refresh_token = refresh_token;
     }
 
     public String getId() {
@@ -36,11 +33,11 @@ public class AuthenticatedUser {
 		return this.password;
     }
     
-    public JwtAccessToken getAccessToken() {
+    public String getAccess_token() {
 		return this.access_token;
     }
     
-    public JwtRefreshToken getRefreshToken() {
+    public String getRefresh_token() {
 		return this.refresh_token;
 	}
 }

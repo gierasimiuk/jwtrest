@@ -1,9 +1,8 @@
-package com.gierasimiuk.jwtrest.model.token;
+package com.gierasimiuk.jwtrest.token;
 
 import java.util.Date;
 
 import com.gierasimiuk.jwtrest.config.JwtSettings;
-import com.gierasimiuk.jwtrest.model.User;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;

@@ -1,7 +1,7 @@
 package com.gierasimiuk.jwtrest.config;
 
-import com.gierasimiuk.jwtrest.model.token.JwtAccessToken;
-import com.gierasimiuk.jwtrest.model.token.JwtRefreshToken;
+import com.gierasimiuk.jwtrest.token.JwtAccessToken;
+import com.gierasimiuk.jwtrest.token.JwtRefreshToken;
 
 public class JwtSettings {
 
