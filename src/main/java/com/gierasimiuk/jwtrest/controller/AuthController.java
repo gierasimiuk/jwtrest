@@ -40,7 +40,8 @@ public class AuthController {
         try {
             user = userService.signup(username, password);
         } catch(Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
+                e.getMessage());
         }
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
@@ -61,11 +62,13 @@ public class AuthController {
         try {
             User user = userService.getUser(id);
             if (user == null) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not find user with id " + id);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
+                    "Could not find user with id " + id);
             }
             authUser = authService.login(user, username, password);
         } catch(Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
+                e.getMessage());
         }
         return new ResponseEntity<>(authUser, HttpStatus.OK);
     }
@@ -85,7 +88,8 @@ public class AuthController {
     		String newToken = authService.token(username, token);
     		return new ResponseEntity<>(newToken, HttpStatus.OK);
     	} catch(Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
+                e.getMessage());
         }
     }
 
