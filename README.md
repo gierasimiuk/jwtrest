@@ -47,7 +47,7 @@ expired, the user must login again.
 
 **URL:** `/api/auth/token`
 
-**Method:** `GET`
+**Method:** `POST`
 
 **Example Data:**
 ```json
