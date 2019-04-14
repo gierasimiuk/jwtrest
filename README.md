@@ -13,10 +13,11 @@ exists, the server responds with a response code of `400`.
 
 **Method:** `POST` 
 
+**Data:**
 ```json
 {
-  username: "username"
-  password: "password"
+  "username": "username",
+  "password": "password"
 }
 ```
 
@@ -26,32 +27,36 @@ username and password. This endpoint will only work once a user has successfully
 signed up. Note that because users are stroed in memory, all users are wiped 
 upon server restart.
 
-`Method: POST`
-`api/auth/login`
-`Data:`
-`{`
-`  id: [string]`
-`  username: [string]`
-`  password: [string]`
-`}`
+URL: api/auth/login
+Method: POST
+**Data:**
+```json
+{
+  "username": "<Unique identifier provided upon login>",
+  "username": "username",
+  "password": "password"
+}
+```
 
 ### Token (TODO):
 Not yet implemented. 
 
-`Method: GET`
-`api/auth/token`
-`Data:`
-`{`
-`  username: [string]`
-`  token: [string]`
-`}`
+URL: api/auth/token
+Method: GET
+```json
+{
+  "username": "<Unique identifier provided upon login>",
+  "token": "<Refresh token as a string>",
+}
+```
 
 ### Access (TODO):
 Not yet implemented. 
 
-`Method: GET`
-`api/access`
-`Data:`
-`{`
-`  token: [string]`
-`}`
+URL: api/access
+Method: GET
+```json
+{
+  "token": "<Full token as a string>",
+}
+```
