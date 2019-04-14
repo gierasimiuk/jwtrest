@@ -8,6 +8,7 @@ Basic RESTful server with JWT authentication built in Java using Spring
 Allows a user to signup simply by sending a post request with the desired 
 username and password in the header. If a user with the given username already 
 exists, the server responds with a response code of `400`.
+
 `Method: POST`
 `URL: api/auth/signup`
 `Data:`
@@ -23,23 +24,17 @@ signed up. Note that because users are stroed in memory, all users are wiped
 upon server restart.
 
 `Method: POST`
-
 `api/auth/login`
-
 `Data:`
-
 `{`
-
 `  id: [string]`
-
 `  username: [string]`
-
 `  password: [string]`
-
 `}`
 
 ### Token (TODO):
 Not yet implemented. 
+
 `Method: GET`
 `api/auth/token`
 `Data:`
@@ -50,6 +45,7 @@ Not yet implemented.
 
 ### Access (TODO):
 Not yet implemented. 
+
 `Method: GET`
 `api/access`
 `Data:`
