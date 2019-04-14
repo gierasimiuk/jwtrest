@@ -37,7 +37,7 @@ upon server restart.
 **Data:**
 ```json
 {
-  "username": "28b8252b-b818-4153-855c-b803093407fa",
+  "id": "28b8252b-b818-4153-855c-b803093407fa",
   "username": "admin",
   "password": "pass123"
 }
