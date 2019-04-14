@@ -42,8 +42,8 @@ are wiped upon server restart.
 
 ### Token:
 Endpoint to process a token refresh. Returns a new access token to the client 
-if and only if a valid refresh token is passed through. If the refresh token is
-expired, the user must login again.
+if and only if a valid JWT refresh token is passed through. If the refresh token
+is expired, the user must login again.
 
 **URL:** `/api/auth/token`
 
