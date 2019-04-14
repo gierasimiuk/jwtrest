@@ -16,7 +16,7 @@ exists, the server responds with a response code of `400`.
 
 **Method:** `POST` 
 
-**Data (JSON):**
+**Data:**
 ```json
 {
   "username": "admin",
