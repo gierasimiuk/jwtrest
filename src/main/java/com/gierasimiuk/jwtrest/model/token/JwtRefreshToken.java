@@ -9,11 +9,11 @@ import com.gierasimiuk.jwtrest.config.JwtSettings;
  */
 public class JwtRefreshToken extends JwtToken {
 
-    JwtRefreshToken(String token) {
+    public JwtRefreshToken(String token) {
         super(token);
     }
 
-    public long getExpiry() {
+    public long getTTL() {
         return JwtSettings.REFRESH_TOKEN_EXPIRY;
     }
 }

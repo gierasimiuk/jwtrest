@@ -9,11 +9,11 @@ import com.gierasimiuk.jwtrest.config.JwtSettings;
  */
 public class JwtAccessToken extends JwtToken {
 
-    JwtAccessToken(String token) {
+    public JwtAccessToken(String token) {
         super(token);
     }
 
-    public long getExpiry() {
+    public long getTTL() {
         return JwtSettings.ACCESS_TOKEN_EXPIRY;
     }
 }

@@ -28,33 +28,33 @@ public class AuthService {
     }
 
     /**
-     * Processes a login request given an existing user and provided username 
-     * and password from the client. 
+     * Processes a login request given an existing user and one sent from the 
+     * client. Both are represented by the {@link User} class.
      * 
-     * @param user an existing user in the system. Must not be null.
-     * @param username the username provided by the client.
-     * @param password the password provided by the client. 
-     * @return the {@link AuthenticatedUser} bundled together with an access JWT and a refresh JWT. 
+     * @param existing the existing user in the system. Must not be null.
+     * @param user the user sent from the client. Must not be null.
+     * @return the {@link AuthenticatedUser} containing JWTs.
      */
-    public AuthenticatedUser login(User user, String username, String password) {
-
-        if (user.getUsername().equals(username) == false) {
-            throw new IllegalArgumentException("Username was not correct");
+    public AuthenticatedUser login(User existing, User user) {
+        if (existing.getUsername().equals(user.getUsername()) == false) {
+            throw new IllegalArgumentException("Incorrect username");
         }
-        
-        if (user.getPassword().equals(password) == false) {
-            throw new IllegalArgumentException("Password was not correct");
+        if (existing.getPassword().equals(user.getPassword()) == false) {
+            throw new IllegalArgumentException("Incorrect password");
         }
-
+        if (existing.getId().equals(user.getId()) == false) {
+            throw new IllegalArgumentException("User IDs do not match");
+        }
         if (authUsers.containsKey(user.getId())) {
-            AuthenticatedUser authUser = authUsers.get(user.getId());
-            // TODO: Should we update the token's TTL here or only upon token refresh? 
-            return authUser;
+            return authUsers.get(user.getId());
         } else {
-            JwtAccessToken accessToken = tokenFactory.createJwtAccessToken(user);
-            JwtRefreshToken refreshToken = tokenFactory.createJwtRefreshToken(user);
+            JwtAccessToken accessToken = 
+                tokenFactory.createJwtAccessToken(user);
+            JwtRefreshToken refreshToken = 
+                tokenFactory.createJwtRefreshToken(user);
             
-            AuthenticatedUser authUser = new AuthenticatedUser(user, accessToken, refreshToken);
+            AuthenticatedUser authUser = new AuthenticatedUser(
+                user, accessToken, refreshToken);
             authUsers.put(authUser.getId(), authUser);
             
             return authUser;
@@ -62,15 +62,43 @@ public class AuthService {
     }
 
     /**
-     * TODO: Refreshes a token.
+     * Creates a new access token given a valid refresh token. If the given 
+     * refresh token is expired, an exception is thrown.
      * 
-     * @param username the username.
-     * @param token the refresh token. 
-     * @return the new refresh token with an updated TTL.
+     * @param user the user ot create the token for.
+     * @param token the refresh token, must not be expired.
+     * @return a new access token.
      */
-    public String token(String username, String token) {
-    	// TODO: Implement
-    	return token;
+    public String token(User user, String token) {
+        JwtRefreshToken refresh = new JwtRefreshToken(token);
+        if (refresh.getExpiration().getTime() < System.currentTimeMillis()) {
+            throw new IllegalArgumentException("Token is expired");
+        }
+        JwtAccessToken access = this.tokenFactory.createJwtAccessToken(user);
+        return access.getToken();
+    }
+
+    /**
+     * Returns true if the given user is authenticated in the system. That is,
+     * a user with the given ID has successfully signed up and logged in and
+     * the token provided is able to be parsed.
+     * 
+     * @param id
+     * @param token
+     * @return
+     */
+    public boolean isAuthenticated(String id, String token) {
+        JwtAccessToken accessToken = new JwtAccessToken(token);
+        if (accessToken.parse() == null) {
+            throw new IllegalArgumentException("Could not parse token");
+        }
+        if (authUsers.get(id) == null) {
+            throw new IllegalArgumentException("User is not authenticated");
+        }
+        if (accessToken.getExpiration().getTime() < System.currentTimeMillis()) {
+            throw new IllegalArgumentException("Token is expired");
+        }
+        return true;
     }
 
     /**
