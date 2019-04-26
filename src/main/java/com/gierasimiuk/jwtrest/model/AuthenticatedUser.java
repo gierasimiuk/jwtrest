@@ -1,7 +1,7 @@
 package com.gierasimiuk.jwtrest.model;
 
 /**
- * Definition of an authenticated user in the system.
+ * {@link AuthenticatedUser} class.
  * 
  * @author Michael Gierasimiuk
  */

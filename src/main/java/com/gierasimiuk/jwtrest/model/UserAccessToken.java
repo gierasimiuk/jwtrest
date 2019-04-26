@@ -1,7 +1,7 @@
 package com.gierasimiuk.jwtrest.model;
 
 /**
- * Encapsulates a user user_identifier and access token.
+ * {@link UserAccessToken} class.
  * 
  * @author Michael Gierasimiuk
  */

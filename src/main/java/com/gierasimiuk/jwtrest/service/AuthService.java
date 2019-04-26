@@ -10,7 +10,7 @@ import com.gierasimiuk.jwtrest.token.JwtRefreshToken;
 import com.gierasimiuk.jwtrest.token.JwtTokenFactory;
 
 /**
- * Service for handling authentication. 
+ * {@link AuthService} service to handle JWT authentication.
  * 
  * @author Michael Gierasimiuk
  */
@@ -28,11 +28,11 @@ public class AuthService {
     }
 
     /**
-     * Processes a login request given an existing user and one sent from the 
-     * client. Both are represented by the {@link User} class.
+     * Processes a login attempt given an existing user found in the system and
+     * user credentials sent from a client.
      * 
      * @param existing the existing user in the system. Must not be null.
-     * @param user the user sent from the client. Must not be null.
+     * @param user the user credentials sent from the client. Must not be null.
      * @return the {@link AuthenticatedUser} containing JWTs.
      */
     public AuthenticatedUser login(User existing, User user) {
@@ -79,31 +79,31 @@ public class AuthService {
     }
 
     /**
-     * Returns true if the given user is authenticated in the system. That is,
-     * a user with the given ID has successfully signed up and logged in and
-     * the token provided is able to be parsed.
+     * Returns true if the user with the given unique identifier is 
+     * authenticated in the system.
      * 
-     * @param id
-     * @param token
+     * @param id the unique id of the user.
+     * @param token the token to parse. 
      * @return
      */
     public boolean isAuthenticated(String id, String token) {
         JwtAccessToken accessToken = new JwtAccessToken(token);
-        if (accessToken.parse() == null) {
-            throw new IllegalArgumentException("Could not parse token");
-        }
         if (authUsers.get(id) == null) {
             throw new IllegalArgumentException("User is not authenticated");
         }
-        if (accessToken.getExpiration().getTime() < System.currentTimeMillis()) {
+        if (accessToken.parse() == null) {
+            throw new IllegalArgumentException("Could not parse token");
+        }
+        long now = System.currentTimeMillis();
+        if (accessToken.getExpiration().getTime() < now) {
             throw new IllegalArgumentException("Token is expired");
         }
         return true;
     }
 
     /**
-     * Finds the {@link AuthenticatedUser} with the given unique identifier and returns
-     * the result. 
+     * Finds the {@link AuthenticatedUser} with the given unique identifier and 
+     * returns the result. 
      * 
      * @param id the unique identifier of the {@link AuthenticatedUser}.
      * @return the {@link AuthenticatedUser} with the given identifier.

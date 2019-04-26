@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 /**
- * Controller for routing HTTP endpoints accordingly. 
+ * Controller for routing HTTP requests.
  * 
  * @author Michael Gierasimiuk
  */
@@ -28,7 +28,7 @@ public class Controller {
     private static final UserService userService = new UserService();
 
     /**
-     * Endpoint to process a signup action.
+     * Endpoint to process a signup.
      * 
      * @param user the user sent as part of the request.
      * @return the {@link ResponseBody} to send back to the client.
@@ -45,7 +45,7 @@ public class Controller {
     }
 
     /**
-     * Endpoint to process a login action.
+     * Endpoint to process a login.
      * 
      * @param user the user sent as part of the request.
      * @return the {@link ResponseBody} to send back to the client. 
@@ -69,9 +69,9 @@ public class Controller {
 
     /**
      * Endpoint to process a token refresh. Returns a new access token to the 
-     * client assuming a valid refresh token is passed through.
+     * client only if a valid refresh token is passed through.
      * 
-     * @param user the user id and refresh token combination.
+     * @param user the user containing id and refresh token.
      * @return the {@link ResponseBody} to send back to the client.
      */
     @RequestMapping(value = "api/auth/token", method = RequestMethod.POST)
@@ -93,13 +93,12 @@ public class Controller {
     }
 
     /**
-     * Endpoint to test user authentication by returning an "Access Granted!"
-     * string if the user sends through a valid token.
+     * Endpoint to test user authentication.
      * 
      * 200 with an "Access granted" string if user is authenticated.
      * 401 with an "Access denied" string if user is not authenticated.
      * 
-     * @param user the user id and access token combination.
+     * @param user the user containing id and refresh token.
      * @return the {@link ResponseBody} to send back to the client.
      */
     @RequestMapping(value="/api/access", method = RequestMethod.GET)

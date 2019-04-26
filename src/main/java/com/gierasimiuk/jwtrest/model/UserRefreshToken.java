@@ -1,7 +1,7 @@
 package com.gierasimiuk.jwtrest.model;
 
 /**
- * Encapsulates a user user_identifier and refresh token.
+ * {@link UserRefreshToken} class.
  * 
  * @author Michael Gierasimiuk
  */

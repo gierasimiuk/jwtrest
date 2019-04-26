@@ -3,7 +3,7 @@ package com.gierasimiuk.jwtrest.model;
 import java.util.UUID;
 
 /**
- * Definition of a user in the system.
+ * {@link User} class.
  * 
  * @author Michael Gierasimiuk
  */
