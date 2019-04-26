@@ -15,8 +15,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 /**
- * Factory class to be used to create {link @JwtAccessToken} and 
- * {link @JwRefreshToken} objects.
+ * Factory for creating {link @JwtAccessToken} and {link @JwRefreshToken}
+ * objects.
  * 
  * @author Michael Gierasimiuk
  */
@@ -52,7 +52,7 @@ public class JwtTokenFactory {
         return new JwtRefreshToken(token);
     }
 
-    // Generic inner function to construct a JWT
+    // construct JWT
     private String constructJwt(String userId, Claims claims, long tokenExpiry) {
         Date now = new Date(System.currentTimeMillis());
 

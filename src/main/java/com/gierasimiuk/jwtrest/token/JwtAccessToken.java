@@ -3,7 +3,7 @@ package com.gierasimiuk.jwtrest.token;
 import com.gierasimiuk.jwtrest.config.JwtSettings;
 
 /**
- * Definition of a JWT access token. 
+ * {@link JwtAccessToken} class.
  * 
  * @author Michael Gierasimiuk
  */

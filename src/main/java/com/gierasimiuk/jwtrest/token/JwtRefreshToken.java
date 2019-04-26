@@ -3,7 +3,7 @@ package com.gierasimiuk.jwtrest.token;
 import com.gierasimiuk.jwtrest.config.JwtSettings;
 
 /**
- * Definition of a JWT refresh token. 
+ * {@link JwtRefreshToken} class.
  * 
  * @author Michael Gierasimiuk
  */
