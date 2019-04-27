@@ -73,6 +73,7 @@ public class Controller {
     public @ResponseBody ResponseEntity<Object> login(@RequestBody User user) {
         AuthenticatedUser authUser;
         try {
+            // Peform user lookup and respond accordingly 
             User found = userService.getUser(user.getId());
             if (found == null) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
@@ -100,15 +101,19 @@ public class Controller {
     public @ResponseBody ResponseEntity<Object> refresh(
             @RequestBody UserRefreshToken user) {
     	try {
+            // Peform user lookup and respond accordingly 
             User found = userService.getUser(user.getUser_id());
             if (found == null) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
                     "Could not find user with id " + user.getUser_id());
             }
+            // Update access token 
             String token = user.getRefresh_token();
             String accessTokenRaw = authService.token(found, token);
-            UserAccessToken accessToken = new UserAccessToken(user.getUser_id(), 
-                accessTokenRaw);
+            UserAccessToken accessToken = new UserAccessToken(
+                user.getUser_id(), 
+                accessTokenRaw
+            );
     		return new ResponseEntity<>(accessToken, HttpStatus.OK);
     	} catch(Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
@@ -133,7 +138,7 @@ public class Controller {
     public @ResponseBody ResponseEntity<Object> access(
             @RequestBody UserAccessToken user) {
         try {
-            // Check if user exists 
+            // Peform user lookup and respond accordingly 
             User found = userService.getUser(user.getUser_id());
             if (found == null) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
