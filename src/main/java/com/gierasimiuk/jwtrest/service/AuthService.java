@@ -35,30 +35,24 @@ public class AuthService {
      * @param user the user credentials sent from the client. Must not be null.
      * @return the {@link AuthenticatedUser} containing JWTs.
      */
-    public AuthenticatedUser login(User existing, User user) throws IllegalArgumentException {
+    public AuthenticatedUser login(User existing, User user) 
+            throws IllegalArgumentException {
+        
         if (existing.getUsername().equals(user.getUsername()) == false) {
             throw new IllegalArgumentException("Incorrect username");
         }
+        
         if (existing.getPassword().equals(user.getPassword()) == false) {
             throw new IllegalArgumentException("Incorrect password");
         }
-        if (existing.getId().equals(user.getId()) == false) {
-            throw new IllegalArgumentException("User IDs do not match");
-        }
-        if (authUsers.containsKey(user.getId())) {
-            return authUsers.get(user.getId());
-        } else {
-            JwtAccessToken accessToken = 
-                tokenFactory.createJwtAccessToken(user);
-            JwtRefreshToken refreshToken = 
-                tokenFactory.createJwtRefreshToken(user);
-            
-            AuthenticatedUser authUser = new AuthenticatedUser(
-                user, accessToken.getToken(), refreshToken.getToken());
-            authUsers.put(authUser.getId(), authUser);
-            
-            return authUser;
-        }
+        
+        String aTok = tokenFactory.createJwtAccessToken(user).getToken();
+        String rTok = tokenFactory.createJwtRefreshToken(user).getToken();
+        
+        AuthenticatedUser aUser = new AuthenticatedUser(user, aTok, rTok);
+        authUsers.put(aUser.getId(), aUser);
+        
+        return aUser;
     }
 
     /**
@@ -70,22 +64,27 @@ public class AuthService {
      * @param token the refresh token, must not be expired.
      * @return a new access token.
      */
-    public String token(User user, String token) throws IllegalArgumentException {
-        AuthenticatedUser authUser = authUsers.get(user.getId());
-        if (authUser == null || authUser.getAccess_token().equals(token)) {
+    public String token(User user, String token) 
+            throws IllegalArgumentException {
+        
+        AuthenticatedUser aUser = authUsers.get(user.getId());
+        if (aUser == null || aUser.getAccess_token().equals(token)) {
             throw new IllegalArgumentException("User is not authenticated");
         }
+        
         JwtRefreshToken refreshToken = new JwtRefreshToken(token);
         if (refreshToken.parse() == null) {
             throw new IllegalArgumentException("Could not parse refresh token");
         }
-        if (refreshToken.getExpiration().getTime() < System.currentTimeMillis()) {
+
+        long currentTime = System.currentTimeMillis();
+        if (refreshToken.getExpiration().getTime() < currentTime) {
             throw new IllegalArgumentException("Token is expired");
         }
-        JwtAccessToken accessToken = this.tokenFactory.createJwtAccessToken(user);
-        String rawToken = accessToken.getToken();
-        authUser.updateAccessToken(rawToken);
-        return rawToken;
+        
+        String aTok = this.tokenFactory.createJwtAccessToken(user).getToken();
+        aUser.updateAccessToken(aTok);
+        return aTok;
     }
 
     /**
@@ -97,18 +96,24 @@ public class AuthService {
      * @param token the access token to parse. 
      * @return true if authenticated.
      */
-    public boolean isAuthenticated(String id, String token) throws IllegalArgumentException {
+    public boolean isAuthenticated(String id, String token) 
+            throws IllegalArgumentException {
+        
         AuthenticatedUser authUser = authUsers.get(id);
         if (authUser == null || authUser.getAccess_token().equals(token)) {
             throw new IllegalArgumentException("User is not authenticated");
         }
+
         JwtAccessToken accessToken = new JwtAccessToken(token);
         if (accessToken.parse() == null) {
             throw new IllegalArgumentException("Could not parse access token");
         }
-        if (accessToken.getExpiration().getTime() < System.currentTimeMillis()) {
+
+        long currentTime = System.currentTimeMillis();
+        if (accessToken.getExpiration().getTime() < currentTime) {
             throw new IllegalArgumentException("Token is expired");
         }
+        
         return true;
     }
 

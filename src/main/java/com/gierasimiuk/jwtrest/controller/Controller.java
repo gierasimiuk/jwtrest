@@ -1,7 +1,5 @@
 package com.gierasimiuk.jwtrest.controller;
 
-import javax.validation.Valid;
-
 import com.gierasimiuk.jwtrest.model.AuthenticatedUser;
 import com.gierasimiuk.jwtrest.model.ProductResponse;
 import com.gierasimiuk.jwtrest.model.User;
@@ -49,8 +47,10 @@ public class Controller {
      * @return the {@link ResponseBody} to send back to the client.
      */
     @CrossOrigin()
-    @RequestMapping(value = "api/users/signup", method = RequestMethod.POST, produces={"application/json"})
-    public @ResponseBody ResponseEntity<Object> signup(@RequestBody @Valid User user) {
+    @RequestMapping(value = "api/users/signup", 
+                    method = RequestMethod.POST, 
+                    produces={"application/json"})
+    public @ResponseBody ResponseEntity<Object> signup(@RequestBody User user) {
         try {
             userService.signup(user);
         } catch(Exception e) {
@@ -67,7 +67,9 @@ public class Controller {
      * @return the {@link ResponseBody} to send back to the client. 
      */
     @CrossOrigin()
-    @RequestMapping(value = "api/users/login", method = RequestMethod.POST, produces={"application/json"})
+    @RequestMapping(value = "api/users/login", 
+                    method = RequestMethod.POST, 
+                    produces={"application/json"})
     public @ResponseBody ResponseEntity<Object> login(@RequestBody User user) {
         AuthenticatedUser authUser;
         try {
@@ -92,8 +94,11 @@ public class Controller {
      * @return the {@link ResponseBody} to send back to the client.
      */
     @CrossOrigin()
-    @RequestMapping(value = "api/auth/token", method = RequestMethod.POST, produces={"application/json"})
-    public @ResponseBody ResponseEntity<Object> refresh(@RequestBody UserRefreshToken user) {
+    @RequestMapping(value = "api/auth/token", 
+                    method = RequestMethod.POST, 
+                    produces={"application/json"})
+    public @ResponseBody ResponseEntity<Object> refresh(
+            @RequestBody UserRefreshToken user) {
     	try {
             User found = userService.getUser(user.getUser_id());
             if (found == null) {
@@ -102,7 +107,8 @@ public class Controller {
             }
             String token = user.getRefresh_token();
             String accessTokenRaw = authService.token(found, token);
-            UserAccessToken accessToken = new UserAccessToken(user.getUser_id(), accessTokenRaw);
+            UserAccessToken accessToken = new UserAccessToken(user.getUser_id(), 
+                accessTokenRaw);
     		return new ResponseEntity<>(accessToken, HttpStatus.OK);
     	} catch(Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
@@ -121,16 +127,22 @@ public class Controller {
      * @return the {@link ResponseBody} to send back to the client.
      */
     @CrossOrigin()
-    @RequestMapping(value="/api/access", method = RequestMethod.GET, produces={"application/json"})
-    public @ResponseBody ResponseEntity<Object> access(@RequestBody UserAccessToken user) {
-        System.out.println("User: " + user.getUser_id());
+    @RequestMapping(value="/api/access", 
+                    method = RequestMethod.GET, 
+                    produces={"application/json"})
+    public @ResponseBody ResponseEntity<Object> access(
+            @RequestBody UserAccessToken user) {
         try {
+            // Check if user exists 
             User found = userService.getUser(user.getUser_id());
             if (found == null) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
                     "Could not find user with id " + user.getUser_id());
             }
-            if (authService.isAuthenticated(user.getUser_id(), user.getAccess_token())) {
+            // Check if user is authenticated and provided a valid acces token 
+            String user_id = user.getUser_id();
+            String token = user.getAccess_token();
+            if (authService.isAuthenticated(user_id, token)) {
                 ProductResponse response = new ProductResponse(
                     this.dataService.getProducts(),
                     "Access Granted!"

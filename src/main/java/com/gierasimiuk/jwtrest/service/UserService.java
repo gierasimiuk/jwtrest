@@ -33,18 +33,22 @@ public class UserService {
      * @return the {@link User} the new user. 
      */
     public User signup(User user) {
+
         if (!StringUtils.hasText(user.getUsername())) {
             throw new IllegalArgumentException(
                 "Cannot create user without 'username' field");
         }
+        
         if (!StringUtils.hasText(user.getPassword())) {
             throw new IllegalArgumentException(
                 "Cannot create user without 'password' field");
         }
+        
         if (usernames.containsKey(user.getUsername())) {
             throw new IllegalArgumentException(
                 "User '" + user.getUsername() + "' already exists");
         }
+        
         users.put(user.getId(), user);
         usernames.put(user.getUsername(), user);
         return user;
