@@ -21,8 +21,8 @@ public class UserService {
      * Creates a new {@link UserService}. 
      */
     public UserService() {
-        users = new HashMap<String, User>();
-        usernames = new HashMap<String, User>();
+        this.users = new HashMap<String, User>();
+        this.usernames = new HashMap<String, User>();
     }
 
     /**

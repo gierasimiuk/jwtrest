@@ -1,14 +1,19 @@
 package com.gierasimiuk.jwtrest.controller;
 
+import javax.validation.Valid;
+
 import com.gierasimiuk.jwtrest.model.AuthenticatedUser;
+import com.gierasimiuk.jwtrest.model.ProductResponse;
 import com.gierasimiuk.jwtrest.model.User;
 import com.gierasimiuk.jwtrest.model.UserAccessToken;
 import com.gierasimiuk.jwtrest.model.UserRefreshToken;
 import com.gierasimiuk.jwtrest.service.AuthService;
+import com.gierasimiuk.jwtrest.service.DummyDataService;
 import com.gierasimiuk.jwtrest.service.UserService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,8 +29,18 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 public class Controller {
     
-    private static final AuthService authService = new AuthService();
-    private static final UserService userService = new UserService();
+    private final AuthService authService;
+    private final UserService userService;
+    private final DummyDataService dataService; 
+
+    /**
+     * Creates a new {@link Controller}.
+     */
+    public Controller() {
+        this.authService = new AuthService();
+        this.userService = new UserService();
+        this.dataService = new DummyDataService();
+    }
 
     /**
      * Endpoint to process a signup.
@@ -33,15 +48,16 @@ public class Controller {
      * @param user the user sent as part of the request.
      * @return the {@link ResponseBody} to send back to the client.
      */
-    @RequestMapping(value = "api/users/signup", method = RequestMethod.POST)
-    public @ResponseBody ResponseEntity<Object> signup(@RequestBody User user) {
+    @CrossOrigin()
+    @RequestMapping(value = "api/users/signup", method = RequestMethod.POST, produces={"application/json"})
+    public @ResponseBody ResponseEntity<Object> signup(@RequestBody @Valid User user) {
         try {
             userService.signup(user);
         } catch(Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
                 e.getMessage());
         }
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
     /**
@@ -50,7 +66,8 @@ public class Controller {
      * @param user the user sent as part of the request.
      * @return the {@link ResponseBody} to send back to the client. 
      */
-    @RequestMapping(value = "api/users/login", method = RequestMethod.POST)
+    @CrossOrigin()
+    @RequestMapping(value = "api/users/login", method = RequestMethod.POST, produces={"application/json"})
     public @ResponseBody ResponseEntity<Object> login(@RequestBody User user) {
         AuthenticatedUser authUser;
         try {
@@ -74,7 +91,8 @@ public class Controller {
      * @param user the user containing id and refresh token.
      * @return the {@link ResponseBody} to send back to the client.
      */
-    @RequestMapping(value = "api/auth/token", method = RequestMethod.POST)
+    @CrossOrigin()
+    @RequestMapping(value = "api/auth/token", method = RequestMethod.POST, produces={"application/json"})
     public @ResponseBody ResponseEntity<Object> refresh(@RequestBody UserRefreshToken user) {
     	try {
             User found = userService.getUser(user.getUser_id());
@@ -93,7 +111,8 @@ public class Controller {
     }
 
     /**
-     * Endpoint to test user authentication.
+     * Endpoint to test user authentication by sending some dummy data through
+     * if a valid token is provided.
      * 
      * 200 with an "Access granted" string if user is authenticated.
      * 401 with an "Access denied" string if user is not authenticated.
@@ -101,8 +120,10 @@ public class Controller {
      * @param user the user containing id and refresh token.
      * @return the {@link ResponseBody} to send back to the client.
      */
-    @RequestMapping(value="/api/access", method = RequestMethod.GET)
+    @CrossOrigin()
+    @RequestMapping(value="/api/access", method = RequestMethod.GET, produces={"application/json"})
     public @ResponseBody ResponseEntity<Object> access(@RequestBody UserAccessToken user) {
+        System.out.println("User: " + user.getUser_id());
         try {
             User found = userService.getUser(user.getUser_id());
             if (found == null) {
@@ -110,7 +131,11 @@ public class Controller {
                     "Could not find user with id " + user.getUser_id());
             }
             if (authService.isAuthenticated(user.getUser_id(), user.getAccess_token())) {
-                return new ResponseEntity<>("Access Granted!", HttpStatus.OK);
+                ProductResponse response = new ProductResponse(
+                    this.dataService.getProducts(),
+                    "Access Granted!"
+                );
+                return new ResponseEntity<>(response, HttpStatus.OK);
             }
         } catch(Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 

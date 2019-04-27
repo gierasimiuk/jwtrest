@@ -39,5 +39,13 @@ public class AuthenticatedUser {
     
     public String getRefresh_token() {
 		return this.refresh_token;
-	}
+    }
+    
+    public void updateAccessToken(String accessToken) {
+        this.access_token = accessToken;
+    }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refresh_token = refreshToken;
+    }
 }

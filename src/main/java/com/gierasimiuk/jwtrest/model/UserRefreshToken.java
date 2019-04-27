@@ -7,16 +7,16 @@ package com.gierasimiuk.jwtrest.model;
  */
 public class UserRefreshToken {
 
-    private String user_id;
+    private String id;
     private String refresh_token;
 
-    public UserRefreshToken(String user_id, String refresh_token) {
-        this.user_id = user_id;
+    public UserRefreshToken(String id, String refresh_token) {
+        this.id = id;
         this.refresh_token = refresh_token;
     }
 
     public String getUser_id() {
-		return this.user_id;
+		return this.id;
     }
 
 	public String getRefresh_token() {
@@ -24,7 +24,7 @@ public class UserRefreshToken {
 	}
 
     public String toString() {
-        return "User ID: " + this.user_id 
+        return "User ID: " + this.id 
             + ", Refresh Token: " + this.refresh_token;
     }
 }
