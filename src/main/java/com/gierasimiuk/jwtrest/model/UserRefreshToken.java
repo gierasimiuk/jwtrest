@@ -5,26 +5,18 @@ package com.gierasimiuk.jwtrest.model;
  * 
  * @author Michael Gierasimiuk
  */
-public class UserRefreshToken {
+public class UserRefreshToken extends UserToken {
 
-    private String id;
-    private String refresh_token;
-
-    public UserRefreshToken(String id, String refresh_token) {
-        this.id = id;
-        this.refresh_token = refresh_token;
-    }
-
-    public String getUser_id() {
-		return this.id;
+    public UserRefreshToken(String id, String token) {
+        super(id, token);
     }
 
 	public String getRefresh_token() {
-		return this.refresh_token;
+		return this.token;
 	}
 
     public String toString() {
         return "User ID: " + this.id 
-            + ", Refresh Token: " + this.refresh_token;
+            + ", Refresh Token: " + this.token;
     }
 }
